@@ -69,4 +69,8 @@ public final class TwitterEnvironmentProperties extends EnvironmentProperties {
    * Max number tweets to be extracted.
    */
   public static final String MAX_NUMBER_TWEETS          = "max.tweets.extract";
+
+  public static final String RETRY_THRESHOLD            = "circuit.breaker.retry.threshold";
+
+  public static final String FAILED_CALL_THRESHOLD      = "circuit.breaker.failed.call.threshold";
 }

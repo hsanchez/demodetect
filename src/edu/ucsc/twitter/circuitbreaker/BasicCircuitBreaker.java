@@ -1,5 +1,6 @@
 package edu.ucsc.twitter.circuitbreaker;
 
+import edu.ucsc.twitter.util.TwitterEnvironment;
 import java.lang.reflect.Constructor;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -10,8 +11,9 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
 public class BasicCircuitBreaker<E extends Exception> implements CircuitBreaker<E> {
-  private static final long FAILED_CALL_THRESHOLD = 1L;
-  private static final long RETRY_THRESHOLD       = 300000L;
+  private static final TwitterEnvironment ENV = TwitterEnvironment.getInstance();
+  private static final long FAILED_CALL_THRESHOLD = ENV.getCircuitBreakerFailedCallThreshold();//1L;
+  private static final long RETRY_THRESHOLD       = ENV.getCircuitBreakerRetryThreshold(); //15 * 60 * 1000;
   private static final long NO_CLOSED_YET         = -1L;
 
   private AtomicLong failedCalls   = new AtomicLong(); // # of failed calls since the cb closed.
@@ -136,7 +138,8 @@ public class BasicCircuitBreaker<E extends Exception> implements CircuitBreaker<
 
   private static <T extends Exception> T throwException(Exception that) throws T {
     try {
-      @SuppressWarnings({"unchecked"}) // we are casting from some subclass of exception to exception --- bad bad
+      //we are casting from some subclass of exception to exception --- bad bad
+      @SuppressWarnings({"RedundantCast"})
       final Constructor<T> c = (Constructor<T>) Exception.class.getDeclaredConstructor(Throwable.class);
       return c.newInstance(that);
     } catch (Exception e) {

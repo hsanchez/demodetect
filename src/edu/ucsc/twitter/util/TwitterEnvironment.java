@@ -83,6 +83,8 @@ public class TwitterEnvironment extends Environment {
         setProperty(TwitterEnvironmentProperties.MAX_NUMBER_TWEETS_PER_FILE, String.valueOf(40));
         setProperty(TwitterEnvironmentProperties.RANDOM_SAMPLE_ARITY, String.valueOf(3));
         setProperty(TwitterEnvironmentProperties.MAX_NUMBER_TWEETS, String.valueOf(300));
+        setProperty(TwitterEnvironmentProperties.RETRY_THRESHOLD, String.valueOf(900000));
+        setProperty(TwitterEnvironmentProperties.FAILED_CALL_THRESHOLD, String.valueOf(1));
       }
     };
   }
@@ -115,6 +117,18 @@ public class TwitterEnvironment extends Environment {
     return Integer.valueOf(
         String.valueOf(getConfiguration().getProperty(
             TwitterEnvironmentProperties.MAX_NUMBER_TWEETS)));
+  }
+
+  public long getCircuitBreakerRetryThreshold(){
+    return Long.valueOf(
+        String.valueOf(getConfiguration().getProperty(
+            TwitterEnvironmentProperties.RETRY_THRESHOLD)));
+  }
+
+  public long getCircuitBreakerFailedCallThreshold(){
+    return Long.valueOf(
+        String.valueOf(getConfiguration().getProperty(
+            TwitterEnvironmentProperties.FAILED_CALL_THRESHOLD)));
   }
 
   /**
