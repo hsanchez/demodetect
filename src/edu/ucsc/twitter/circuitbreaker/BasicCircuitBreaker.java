@@ -109,6 +109,7 @@ public class BasicCircuitBreaker<E extends Exception> implements CircuitBreaker<
    */
   void notifyStatusChange(CircuitBreakerStatus oldStatus, CircuitBreakerStatus newStatus) {
     if((oldStatus == newStatus) && (newStatus == CircuitBreakerStatus.CLOSED)) return;
+    if(!TwitterEnvironment.getInstance().isCircuitBreakerInDebugMode()) return;
 
     System.out.println("Circuit breaker's status has changed from "
         + oldStatus + " to " + newStatus
@@ -160,5 +161,9 @@ public class BasicCircuitBreaker<E extends Exception> implements CircuitBreaker<
     @Override public long getAvgRecoveryTime() {
       return avgRecoveryTime;
     }
+  }
+
+  public static void main(String[] args) {
+    new BasicCircuitBreaker<RuntimeException>();
   }
 }

@@ -18,8 +18,10 @@ package edu.ucsc.twitter.util;
 import edu.ucsc.cli.IterableFileReader;
 import edu.ucsc.cli.util.Environment;
 import edu.ucsc.cli.util.Strings;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -62,7 +64,11 @@ public class TwitterEnvironment extends Environment {
 
   public void changeMaxTweetsToBeExtracted(int maxNumber){
     getAbstractConfiguration().setProperty(TwitterEnvironmentProperties.MAX_NUMBER_TWEETS, String.valueOf(maxNumber));
-  }  
+  }
+
+  public boolean isCircuitBreakerInDebugMode(){
+    return Boolean.valueOf(Strings.toString(getConfiguration().getProperty(TwitterEnvironmentProperties.CIRCUIT_BREAKER_DEBUG)));
+  }
   
   
   @Override public AbstractConfiguration getAbstractConfiguration(){
@@ -74,17 +80,16 @@ public class TwitterEnvironment extends Environment {
       private static final long serialVersionUID = 1L;
 
       {
-        setProperty(TwitterEnvironmentProperties.KEYWORDS,
-            System.getProperty("user.dir") + "/extensions/config/keywords.cfg");
+        setProperty(TwitterEnvironmentProperties.KEYWORDS,"config/keywords.cfg");
         setProperty(TwitterEnvironmentProperties.TWITTER_SCREENNAME, "none");
         setProperty(TwitterEnvironmentProperties.TWITTER_PASSWORD, "none");
-        setProperty(TwitterEnvironmentProperties.OUTPUT_FOLDERNAME,
-            System.getProperty("user.dir") + "/extensions/twitter/output/");
+        setProperty(TwitterEnvironmentProperties.OUTPUT_FOLDERNAME,"output/");
         setProperty(TwitterEnvironmentProperties.MAX_NUMBER_TWEETS_PER_FILE, String.valueOf(40));
         setProperty(TwitterEnvironmentProperties.RANDOM_SAMPLE_ARITY, String.valueOf(3));
         setProperty(TwitterEnvironmentProperties.MAX_NUMBER_TWEETS, String.valueOf(300));
         setProperty(TwitterEnvironmentProperties.RETRY_THRESHOLD, String.valueOf(900000));
         setProperty(TwitterEnvironmentProperties.FAILED_CALL_THRESHOLD, String.valueOf(1));
+        setProperty(TwitterEnvironmentProperties.CIRCUIT_BREAKER_DEBUG, String.valueOf(false));
       }
     };
   }
@@ -214,5 +219,16 @@ public class TwitterEnvironment extends Environment {
         throw new IllegalStateException(e);
       }
     }
+  }
+
+  public static void main(String[] args) {
+    final String base = getInstance().getOutputFoldername();
+    System.out.println(base);
+    final File directory = new File(base);
+    System.out.println(directory.exists());
+    System.out.println(Arrays.toString(directory.listFiles()));
+
+    System.out.println(getInstance().isCircuitBreakerInDebugMode());
+
   }
 }

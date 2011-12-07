@@ -135,7 +135,6 @@ public class PeriodicTweetsSearch implements TweetsSearch {
       try {
         secondBreaker().callStarted();
         try {
-
           final ResponseList<Status> status = TwitterEnvironment.getTwitterService().getUserTimeline(userID);
           secondBreaker().callSucceeded();
           if(!status.isEmpty()){
@@ -151,6 +150,8 @@ public class PeriodicTweetsSearch implements TweetsSearch {
               if(screenmaeIsEmpty) return dealWithCamelCasing(firstname);
               return dealWithCamelCasing(firstname);
             }
+           } else {
+            return "none";
           }
 
         } catch (Exception e){

@@ -33,7 +33,7 @@ public final class TwitterEnvironmentProperties extends EnvironmentProperties {
   /**
    * Name of the configuration properties file.
    */
-  public static final String FILE = System.getProperty("user.dir") + "/extensions/twitter/config/runtime.cfg";
+  public static final String FILE = System.getProperty("user.dir") + "/config/runtime.cfg";
 
   /**
    * Developer's twitter username.
@@ -73,4 +73,6 @@ public final class TwitterEnvironmentProperties extends EnvironmentProperties {
   public static final String RETRY_THRESHOLD            = "circuit.breaker.retry.threshold";
 
   public static final String FAILED_CALL_THRESHOLD      = "circuit.breaker.failed.call.threshold";
+
+  public static final String CIRCUIT_BREAKER_DEBUG      = "circuit.breaker.debug";
 }
