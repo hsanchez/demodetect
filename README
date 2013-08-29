@@ -1,5 +1,3 @@
 This code is for my Information Retrieval Project.
 This tiny project belongs to a bigger one; i.e., the Bullying detection project.
-The main responsibility for this code is to predict gender and by using any available
-information on Twitter and age by using machine learning classifier.
-This file was modified by IntelliJ IDEA 10.5.4 for binding GitHub repository
+The main responsibility for this code is to predict Twitter users' gender and age by using machine learning classifiers.
